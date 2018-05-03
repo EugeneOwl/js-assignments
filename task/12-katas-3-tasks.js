@@ -28,7 +28,45 @@
  *   'NULL'      => false 
  */
 function findStringInSnakingPuzzle(puzzle, searchStr) {
-    throw new Error('Not implemented');
+    puzzle = puzzle.map(item => item.split(''));
+
+    function dfs(currCoordinates, step) {
+        let save = puzzle[currCoordinates.x][currCoordinates.y];
+        puzzle[currCoordinates.x][currCoordinates.y] = "";
+
+        if (step === (searchStr.length-1))
+            return true;
+
+        let result = false;
+        let steps = [[1, 0], [-1, 0], [0, -1], [0, 1]];
+
+        for (let i = 0; i < 4; i++) {
+            let newX = currCoordinates.x + steps[i][0],
+                newY = currCoordinates.y + steps[i][1];
+            try {
+                if (puzzle[newX][newY] === searchStr[step+1]) {
+                    result = result || dfs({x: newX, y: newY}, step + 1);
+                    if(result){
+                        break;
+                    }
+                }
+            }
+            catch (e){}
+        }
+
+        puzzle[currCoordinates.x][currCoordinates.y] = save;
+        return result;
+    }
+
+    for (let i = 0; i < puzzle.length; i++) {
+        for (let j = 0; j < puzzle[i].length; j++)
+            if (puzzle[i][j] === searchStr[0]) {
+                if (dfs({x: i, y: j}, 0))
+                    return true;
+            }
+    }
+
+    return false;
 }
 
 
@@ -45,7 +83,27 @@ function findStringInSnakingPuzzle(puzzle, searchStr) {
  *    'abc' => 'abc','acb','bac','bca','cab','cba'
  */
 function* getPermutations(chars) {
-    throw new Error('Not implemented');
+    function* HeapsAlgorithm(n, A) {
+        if (n == 1) {
+            yield A.join('');
+        } else {
+            let temp;
+            for (let i = 0; i < n; i++) {
+                yield* HeapsAlgorithm(n - 1, A);
+                if (n % 2 == 0) {
+                    temp = A[i];
+                    A[i] = A[n - 1];
+                    A[n - 1] = temp;
+                } else {
+                    temp = A[0];
+                    A[0] = A[n - 1];
+                    A[n - 1] = temp;
+                }
+            }
+        }
+    }
+
+    yield* HeapsAlgorithm(chars.length, chars.split(''));
 }
 
 
@@ -65,7 +123,11 @@ function* getPermutations(chars) {
  *    [ 1, 6, 5, 10, 8, 7 ] => 18  (buy at 1,6,5 and sell all at 10)
  */
 function getMostProfitFromStockQuotes(quotes) {
-    throw new Error('Not implemented');
+    let sum = 0;
+    quotes.forEach((value, index) => {
+        sum += quotes.slice(index).sort((a, b) => b - a)[0] - value;
+    });
+    return sum;
 }
 
 
@@ -85,20 +147,44 @@ function getMostProfitFromStockQuotes(quotes) {
  */
 function UrlShortener() {
     this.urlAllowedChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"+
-                           "abcdefghijklmnopqrstuvwxyz"+
-                           "0123456789-_.~!*'();:@&=+$,/?#[]";
+        "abcdefghijklmnopqrstuvwxyz"+
+        "0123456789-_.~!*'();:@&=+$,/?#[]";
 }
 
 UrlShortener.prototype = {
 
     encode: function(url) {
-        throw new Error('Not implemented');
+        let result = "";
+
+        for (let i = 0; i < url.length; i += 2) {
+            let a = url.charCodeAt(i);
+            let b = url.charCodeAt(i + 1);
+            let code = (a << 8) | b;
+
+            result += String.fromCharCode(code);
+        }
+
+        return result;
     },
-    
+
     decode: function(code) {
-        throw new Error('Not implemented');
-    } 
-}
+        let result = "";
+
+        for (let i = 0; i < code.length; i++) {
+            let char = parseInt(code.charCodeAt(i), 10);
+            let b = char & 255;
+            let a = (char >> 8) & 255;
+
+            if (b === 0) {
+                result += String.fromCharCode(a)
+            } else {
+                result += String.fromCharCode(a) + String.fromCharCode(b);
+            }
+        }
+
+        return result;
+    }
+};
 
 
 module.exports = {

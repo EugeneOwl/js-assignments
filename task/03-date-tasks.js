@@ -2,7 +2,7 @@
 
 /********************************************************************************************
  *                                                                                          *
- * Plese read the following tutorial before implementing tasks:                             *
+ * Документация к прочтению перед выполнением задания:                             *
  * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Numbers_and_dates#Date_object
  * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date    *
  *                                                                                          *
@@ -10,8 +10,8 @@
 
 
 /**
- * Parses a rfc2822 string date representation into date value
- * For rfc2822 date specification refer to : http://tools.ietf.org/html/rfc2822#page-14
+ * Преобразует строку типа rfc2822 в дату
+ * О строках типа rfc2822 можно прочесть в спецификации : http://tools.ietf.org/html/rfc2822#page-14
  *
  * @param {string} value
  * @return {date}
@@ -22,12 +22,12 @@
  *    'Sun, 17 May 1998 03:00:00 GMT+01' => Date()
  */
 function parseDataFromRfc2822(value) {
-   throw new Error('Not implemented');
+    return new Date(value);
 }
 
 /**
- * Parses an ISO 8601 string date representation into date value
- * For ISO 8601 date specification refer to : https://en.wikipedia.org/wiki/ISO_8601
+ * Преобразует строку типа ISO 8601 в дату
+ * О строках типа ISO 8601 можно прочесть в спецификации : https://en.wikipedia.org/wiki/ISO_8601
  *
  * @param {string} value
  * @return {date}
@@ -37,13 +37,13 @@ function parseDataFromRfc2822(value) {
  *    '2016-01-19T08:07:37Z' => Date()
  */
 function parseDataFromIso8601(value) {
-   throw new Error('Not implemented');
+    return new Date(value);
 }
 
 
 /**
- * Returns true if specified date is leap year and false otherwise
- * Please find algorithm here: https://en.wikipedia.org/wiki/Leap_year#Algorithm
+ * Возвращает true, если указанная дата находится в высокосном году и false в противном случае.
+ * Об алгоритме определения высокосного года : https://en.wikipedia.org/wiki/Leap_year#Algorithm
  *
  * @param {date} date
  * @return {bool}
@@ -56,13 +56,16 @@ function parseDataFromIso8601(value) {
  *    Date(2015,1,1)    => false
  */
 function isLeapYear(date) {
-   throw new Error('Not implemented');
+    return (date.getFullYear())%400==0
+        ?true:(date.getFullYear()%100==0
+            ?false:(date.getFullYear()%4==0
+                ?true:false))
 }
 
 
 /**
- * Returns the string represention of the timespan between two dates.
- * The format of output string is "HH:mm:ss.sss"
+ * Возвращает строковое представление промежутка времени между двумя датами.
+ * Формат строки на выходе : "HH:mm:ss.sss"
  *
  * @param {date} startDate
  * @param {date} endDate
@@ -76,14 +79,17 @@ function isLeapYear(date) {
  *    Date(2000,1,1,10,0,0),  Date(2000,1,1,15,20,10,453)   => "05:20:10.453"
  */
 function timeSpanToString(startDate, endDate) {
-   throw new Error('Not implemented');
+    let time =endDate-startDate;
+    let date = new Date(null);
+    date.setMilliseconds(time);
+    return date.toISOString().slice(11,-1);
 }
 
 
 /**
- * Returns the angle (in radians) between the hands of an analog clock for the specified Greenwich time.
- * If you have problem with solution please read: https://en.wikipedia.org/wiki/Clock_angle_problem
- * 
+ * Возвращает угол (в радианах) между часовыми стрелками двух аналоговых часов для указанного времени по Гринвичу.
+ * При возникновениии проблем, посмотрите : https://en.wikipedia.org/wiki/Clock_angle_problem
+ *
  * @param {date} date
  * @return {number}
  *
@@ -94,9 +100,16 @@ function timeSpanToString(startDate, endDate) {
  *    Date.UTC(2016,3,5,21, 0) => Math.PI/2
  */
 function angleBetweenClockHands(date) {
-    throw new Error('Not implemented');
+    let milsec = new Date(null);
+    milsec.setMilliseconds(date);
+    let hours = +(milsec.toISOString().substr(11,2));
+    hours = hours >= 12 ? hours - 12 : hours;
+    let minutes = +(milsec.toISOString().substr(14,2));
+    let angleHours = (hours+(minutes/60))*30;
+    let angleMinutes = minutes*6;
+    let minres = Math.min((360- (angleHours - angleMinutes)),(angleHours - angleMinutes));
+    return Math.abs(minres) * Math.PI/180;
 }
-
 
 module.exports = {
     parseDataFromRfc2822: parseDataFromRfc2822,

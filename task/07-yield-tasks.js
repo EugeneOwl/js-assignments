@@ -2,7 +2,7 @@
 
 /********************************************************************************************
  *                                                                                          *
- * Plese read the following tutorial before implementing tasks:                             *
+ * Перед началом работы с заданием, пожалуйста ознакомьтесь с туториалом:                   *
  * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Iterators_and_Generators   *
  * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/yield        *
  *                                                                                          *
@@ -10,7 +10,7 @@
 
 
 /**
- * Returns the lines sequence of "99 Bottles of Beer" song:
+ * Возвращает последовательность строк песни «99 бутылок пива»:
  *
  *  '99 bottles of beer on the wall, 99 bottles of beer.'
  *  'Take one down and pass it around, 98 bottles of beer on the wall.'
@@ -22,10 +22,21 @@
  *  'No more bottles of beer on the wall, no more bottles of beer.'
  *  'Go to the store and buy some more, 99 bottles of beer on the wall.'
  *
- * See the full text at
+ *  Перевод:
+ *  '<количество> бутылок пива на стене'
+ *  '<количество> бутылок пива!'
+ *  'Возьми одну, пусти по кругу'
+ *  '<количество минус 1> бутылок пива на стене!'
+ *  ...
+ *  'Нет бутылок пива на стене!'
+ *  'Нет бутылок пива!'
+ *  'Пойди в магазин и купи ещё'
+ *  '99 бутылок пива на стене!'
+ *
+ * Полный текст песни
  * http://99-bottles-of-beer.net/lyrics.html
  *
- * NOTE: Please try to complete this task faster then original song finished:
+ * Замечание: Попробуй закончить задание быстрее чем закончится песня:
  * https://www.youtube.com/watch?v=Z7bmyjxJuVY   :)
  *
  *
@@ -33,33 +44,54 @@
  *
  */
 function* get99BottlesOfBeer() {
-    throw new Error('Not implemented');
+    let beer = 99;
+    while (beer > 2) {
+        yield `${beer} bottles of beer on the wall, ${beer} bottles of beer.`;
+        yield `Take one down and pass it around, ${--beer} bottles of beer on the wall.`;
+    }
+    if (beer == 2) {
+        yield '2 bottles of beer on the wall, 2 bottles of beer.';
+        yield 'Take one down and pass it around, 1 bottle of beer on the wall.';
+        yield '1 bottle of beer on the wall, 1 bottle of beer.';
+        yield 'Take one down and pass it around, no more bottles of beer on the wall.';
+        yield 'No more bottles of beer on the wall, no more bottles of beer.';
+        yield 'Go to the store and buy some more, 99 bottles of beer on the wall.';
+    }
 }
 
 
 /**
- * Returns the Fibonacci sequence:
+ * Возвращает последовательность Фибоначчи:
  *   0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, ...
  *
- * See more at: https://en.wikipedia.org/wiki/Fibonacci_number
+ * Подробности: https://en.wikipedia.org/wiki/Fibonacci_number
  *
  * @return {Iterable.<number>}
  *
  */
 function* getFibonacciSequence() {
-    throw new Error('Not implemented');
+    let f1 = 0;
+    let f2 = 0;
+    yield f2++;
+
+    while(true){
+        yield f2;
+        let sum = f1 + f2;
+        f1 = f2;
+        f2 = sum;
+    }
 }
 
 
 /**
- * Traverses a tree using the depth-first strategy
- * See details: https://en.wikipedia.org/wiki/Depth-first_search
+ * Обход дерева с использованием поиска в глубину
+ * Подробности: https://en.wikipedia.org/wiki/Depth-first_search
  *
- * Each node have child nodes in node.children array.
- * The leaf nodes do not have 'children' property.
+ * У каждого узла(node) есть потомки (child) записанные в массив node.children
+ * Листья не содержат потомков, т.е. у них отсутствует свойство 'children'
  *
- * @params {object} root the tree root
- * @return {Iterable.<object>} the sequence of all tree nodes in depth-first order
+ * @params {object} корень дерева
+ * @return {Iterable.<object>} последовательность всех вершин в порядке поиска в глубину
  * @example
  *
  *   var node1 = { n:1 }, node2 = { n:2 }, node3 = { n:3 }, node4 = { n:4 },
@@ -82,19 +114,26 @@ function* getFibonacciSequence() {
  *
  */
 function* depthTraversalTree(root) {
-    throw new Error('Not implemented');
+    let node = [root];
+    while(node.length) {
+        let current = node.pop();
+        yield current;
+        if(current.children){
+            node = node.concat(current.children.reverse());
+        }
+    }
 }
 
 
 /**
- * Traverses a tree using the breadth-first strategy
- * See details: https://en.wikipedia.org/wiki/Breadth-first_search
+ * Обход дерева с использованием поиска в ширину
+ * Подробности: https://en.wikipedia.org/wiki/Breadth-first_search
  *
- * Each node have child nodes in node.children array.
- * The leaf nodes do not have 'children' property.
+ * У каждого узла(node) есть потомки (child) записанные в массив node.children
+ * Листья не содержат потомков, т.е. у них отсутствует свойство 'children'
  *
- * @params {object} root the tree root
- * @return {Iterable.<object>} the sequence of all tree nodes in breadth-first order
+ * @params {object} корень дерева
+ * @return {Iterable.<object>} последовательность всех вершин в порядке поиска в ширину
  * @example
  *     source tree (root = 1):
  *
@@ -108,17 +147,25 @@ function* depthTraversalTree(root) {
  *
  */
 function* breadthTraversalTree(root) {
-    throw new Error('Not implemented');
+    let nodes = [root];
+    for (let i = 0; i < nodes.length; i++) {
+        yield nodes[i];
+        if ('children' in nodes[i]) {
+            for (let j = 0; j < nodes[i].children.length; j++) {
+                nodes.push(nodes[i].children[j]);
+            }
+        }
+    }
 }
 
 
 /**
- * Merges two yield-style sorted sequences into the one sorted sequence.
- * The result sequence consists of sorted items from source iterators.
+ * Слияние двух отсортированных последовательностей в одну.
+ * Результат содержит все элементы объединенных последовательносте в отсортированном виде
  *
  * @params {Iterable.<number>} source1
  * @params {Iterable.<number>} source2
- * @return {Iterable.<number>} the merged sorted sequence
+ * @return {Iterable.<number>} объединенная отсотрированная последовательность
  *
  * @example
  *   [ 1, 3, 5, ... ], [2, 4, 6, ... ]  => [ 1, 2, 3, 4, 5, 6, ... ]
@@ -126,7 +173,26 @@ function* breadthTraversalTree(root) {
  *   [ 1, 3, 5, ... ], [ -1 ] => [ -1, 1, 3, 5, ...]
  */
 function* mergeSortedSequences(source1, source2) {
-    throw new Error('Not implemented');
+    let s1 = source1(), s2 = source2();
+    let first = s1.next().value, second = s2.next().value;
+
+    while (first != undefined || second != undefined) {
+        if (first != undefined && second != undefined) {
+            if (first < second) {
+                yield first;
+                first = s1.next().value;
+            } else {
+                yield second;
+                second = s2.next().value;
+            }
+        } else if (first != undefined) {
+            yield first;
+            first = s1.next().value;
+        } else if (second != undefined) {
+            yield second;
+            second = s2.next().value;
+        }
+    }
 }
 
 

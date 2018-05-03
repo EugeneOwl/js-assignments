@@ -2,20 +2,20 @@
 
 /********************************************************************************************
  *                                                                                          *
- * Plese read the following tutorial before implementing tasks:                             *
+ * Пожалуйста, прочтите информацию по ссылке перед выполнением заданий:                            *
  * https://developer.mozilla.org/en/docs/Web/JavaScript/Guide/Regular_Expressions           *
  *                                                                                          *
  ********************************************************************************************/
 
 
 /**
- * Returns the regexp that matches a GUID string representation
+ * Возвращает регулярное выражение, которое валидирует GUID строку, представленную в виде
  * '{XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX}',
- * where X is hexadecimal digit (0,1,2...,9,A,a,B,b,C,c,D,d,F,f)
+ * гед X - шестнадцатеричное число (0,1,2...,9,A,a,B,b,C,c,D,d,F,f)
  *
- * See more details: https://en.wikipedia.org/wiki/Globally_unique_identifier
+ * Больше информации по ссылке: https://en.wikipedia.org/wiki/Globally_unique_identifier
  *
- * Match :
+ *  Match :
  *   '{3F2504E0-4F89-41D3-9A0C-0305E82C3301}'
  *   '{21EC2020-3AEA-4069-A2DD-08002B30309D}'
  *   '{0c74f13f-fa83-4c48-9b33-68921dd72463}'
@@ -31,13 +31,13 @@
  * @return {RegExp}
  */
 function getRegexForGuid() {
-   throw new Error('Not implemented');
+    return /\{[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}\}/i
 }
 
 
 /**
- * Returns the regexp that matches all the strings from first column
- * but of them from the second
+ * Вернуть регулярное выражение, которое считает валидными варианты
+ * из колонки Match и невалидными - Do not match
  *
  * Match :                 Do not match:
  * -----------             --------------
@@ -47,19 +47,19 @@ function getRegexForGuid() {
  *  'slap two'                'part'
  *  'respite'
  *
- * NOTE : the regex lenth should be < 13
+ * NOTE : длина конечного регулярного выражения должна быть меньше 13 символов
  *
  * @return {RegExp}
  *
  */
 function getRegexForPitSpot() {
-   throw new Error('Not implemented');
+    return /p[ioa ]t/
 }
 
 
 /**
- * Returns the regexp that matches all IPv4 strings in
- * 'XX.XX.XX.XX' dotted format where XX is number 0 to 255
+ * Вернуть регулярное выражение, которое валидирует IPv4 строку в формате
+ * 'XX.XX.XX.XX', где XX - число от 0 до 255
  *
  * Valid IPv4:                       Invalid IPv4
  * ---------------                  -----------------
@@ -72,13 +72,14 @@ function getRegexForPitSpot() {
  * @return {RegExp}
  */
 function getRegexForIPv4() {
-   throw new Error('Not implemented');
+    return /^((25[0-5]|2[0-4]\d|[01]?\d\d?)(\.|$)){4}$/
 }
 
 
 /**
- * Returns the regexp that matches all SSN (Social Security Number) codes in
- * 'XXX-XX-XXXX' format where X is digit, where each group can't be all zeros
+ * Вернуть регулярное выражение, которое валидирует все SSN (Social Security Number) коды в
+ * 'XXX-XX-XXXX' формате, где X это цифра, из которой состоит группа  XXX
+ * Каждая группа XXX не может состоять из все нулей.
  * https://en.wikipedia.org/wiki/Social_Security_number
  *
  * Valid SSN:                       Invalid SSN
@@ -91,18 +92,18 @@ function getRegexForIPv4() {
  * @return {RegExp}
  */
 function getRegexForSSN() {
-   throw new Error('Not implemented');
+    return /(?!0{3})\d{3}-(?!0{2})\d{2}-(?!0{4})\d{4}/
 }
 
 
 /**
- * Returns the password validator regex.
- * Regex will validate a password to make sure it meets the follwing criteria:
- *  - At least specified characters long (argument minLength)
- *  - Contains a lowercase letter
- *  - Contains an uppercase letter
- *  - Contains a number
- *  - Valid passwords will only be alphanumeric characters.
+ * Возвращает регулярное выражение для проверки валидности пароля
+ * Регулярное выражение проверит пароль по следующим критериям:
+ *  - Длина пароля не меньше minLength (аргумент minLength)
+ *  - Содержит строку в нижнем регистре
+ *  - Содержит строку в верхнем регистре
+ *  - Содержит число
+ *  - Валидный пароль содержит только буквенно-цифровые символы.
  *
  * @param {number} minLength
  * @return {Regex}
@@ -116,9 +117,9 @@ function getRegexForSSN() {
  *   'Pa55'.match(validator) => false
  */
 function getPasswordValidator(minLength) {
-   throw new Error('Not implemented');
+    let reg = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]\{' + minLength + ',\}$');
+    return reg;
 }
-
 
 module.exports = {
     getRegexForGuid: getRegexForGuid,
