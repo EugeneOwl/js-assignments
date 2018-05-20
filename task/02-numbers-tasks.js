@@ -112,12 +112,12 @@ function getLinearEquationRoot(a, b) {
  */
 
 function getAngleBetweenVectors(x1, y1, x2, y2) {
-    return Math.acos(ScalarProduct(x1, y1, x2, y2) / (ModuleVector(x1, y1) * ModuleVector(x2, y2)));
+    return Math.acos(help1(x1, y1, x2, y2) / (help2(x1, y1) * help2(x2, y2)));
 }
-function ScalarProduct(x1, y1, x2, y2) {
+function help1(x1, y1, x2, y2) {
     return (x1 * x2) + (y1 * y2);
 }
-function ModuleVector(x1, y1) {
+function help2(x1, y1) {
     return Math.sqrt(Math.pow(x1, 2) + Math.pow(y1, 2));
 }
 

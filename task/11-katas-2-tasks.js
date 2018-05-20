@@ -118,14 +118,14 @@ const PokerRank = {
     TwoPairs: 2,
     OnePair: 1,
     HighCard: 0
-}
+};
 
 function getPokerHandRank(hand) {
     function get(hand)
     {
         const _ranks = 'A234567891JQKA',
-            suits = [],
-            ranks = {
+            spines = [],
+            quolities = {
                 count: [],
                 values: [],
                 sorted: []
@@ -133,32 +133,32 @@ function getPokerHandRank(hand) {
 
         for (let v of hand)
         {
-            if (ranks.values.indexOf(v[0]) < 0)
+            if (quolities.values.indexOf(v[0]) < 0)
             {
-                ranks.values.push(v[0]);
-                ranks.count.push(1);
+                quolities.values.push(v[0]);
+                quolities.count.push(1);
             }
             else
             {
-                ranks.count[ranks.values.indexOf(v[0])]++;
+                quolities.count[quolities.values.indexOf(v[0])]++;
             }
 
-            if (suits.indexOf(v.slice(-1)) < 0)
+            if (spines.indexOf(v.slice(-1)) < 0)
             {
-                suits.push(v.slice(-1));
+                spines.push(v.slice(-1));
             }
         }
-        ranks.sorted = ranks.values.sort((a, b) => _ranks.indexOf(a) - _ranks.indexOf(b));
-        if (ranks.sorted[0] === 'A' && ranks.sorted[1] !== '2')
+        quolities.sorted = quolities.values.sort((a, b) => _ranks.indexOf(a) - _ranks.indexOf(b));
+        if (quolities.sorted[0] === 'A' && quolities.sorted[1] !== '2')
         {
-            ranks.sorted.splice(0, 1);
-            ranks.sorted.push('A');
+            quolities.sorted.splice(0, 1);
+            quolities.sorted.push('A');
         }
 
         this.getCount = function (cnt)
         {
             let res = 0;
-            for (let v of ranks.count)
+            for (let v of quolities.count)
             {
                 if (v === cnt)
                 {
@@ -166,23 +166,23 @@ function getPokerHandRank(hand) {
                 }
             }
             return res;
-        }
+        };
 
         this.isFlush = function()
         {
-            return suits.length === 1;
+            return spines.length === 1;
         };
 
         this.isStraight = function() {
-            if (ranks.sorted.length < 5)
+            if (quolities.sorted.length < 5)
             {
                 return false;
             }
             for (let i = 1; i < 5; i++)
             {
                 if (
-                    _ranks.indexOf(ranks.sorted[i - 1]) + 1 !== _ranks.indexOf(ranks.sorted[i]) &&
-                    _ranks.indexOf(ranks.sorted[i - 1]) + 1 !== _ranks.lastIndexOf(ranks.sorted[i])
+                    _ranks.indexOf(quolities.sorted[i - 1]) + 1 !== _ranks.indexOf(quolities.sorted[i]) &&
+                    _ranks.indexOf(quolities.sorted[i - 1]) + 1 !== _ranks.lastIndexOf(quolities.sorted[i])
                 )
                 {
                     return false;
@@ -266,34 +266,31 @@ function* getFigureRectangles(figure) {
     }
 
     function rec(row, col) {
-        let _col,
-            _row,
-            resultCol,
-            resultRow;
+        let column, rowumn, resultColumn, resultRowumn;
 
-        _col = myLoop(row, col, 0, 1, '|');
-        if (_col === false) return false;
-        _row = myLoop(row, _col, 1, 0, '-');
-        if (_row === false) return false;
-        resultCol = _col;
-        resultRow = _row;
+        column = myLoop(row, col, 0, 1, '|');
+        if (column === false) return false;
+        rowumn = myLoop(row, column, 1, 0, '-');
+        if (rowumn === false) return false;
+        resultColumn = column;
+        resultRowumn = rowumn;
 
-        _col = myLoop(_row, _col, 0, -1, '|');
-        if (_col === false) return false;
-        _row = myLoop(_row, _col, -1, 0, '-');
-        if (_row === false) return false;
+        column = myLoop(rowumn, column, 0, -1, '|');
+        if (column === false) return false;
+        rowumn = myLoop(rowumn, column, -1, 0, '-');
+        if (rowumn === false) return false;
 
-        if (_row === row && _col === col) {
+        if (rowumn === row && column === col) {
             return {
-                width: resultCol - col + 1,
-                height: resultRow - row + 1
+                width: resultColumn - col + 1,
+                height: resultRowumn - row + 1
             };
         } else
             return false;
     }
 
     function getFigure(obj) {
-        var line = '+' + '-'.repeat(obj.width - 2) + '+\n',
+        let line = '+' + '-'.repeat(obj.width - 2) + '+\n',
             result  = line;
         result += ('|' + ' '.repeat(obj.width - 2) + '|\n').repeat(obj.height - 2);
         return result + line;

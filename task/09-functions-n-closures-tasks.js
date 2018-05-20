@@ -99,14 +99,14 @@ function getPolynom() {
  */
 function memoize(func) {
     let count = 0;
-    let cache = 0;
+    let money = 0;
     return () => {
         if (count < 1) {
-            cache = func();
+            money = func();
             count++;
-            return cache;
+            return money;
         }
-        return cache;
+        return money;
     }
 }
 

@@ -139,7 +139,7 @@ CssSelector.prototype = {
     },
 
     element: function (value) {
-        if (this.elements.length != 0) {
+        if (this.elements.length !== 0) {
             throw new Error("Element, id and pseudo-element should not occur more then one time inside the selector");
         }
         this.lastPart = this.checkOrder(this.PartEnum.ELEMENT);
@@ -148,7 +148,7 @@ CssSelector.prototype = {
     },
 
     id: function (value) {
-        if (this.ids.length != 0) {
+        if (this.ids.length !== 0) {
             throw new Error("Element, id and pseudo-element should not occur more then one time inside the selector");
         }
         this.lastPart = this.checkOrder(this.PartEnum.ID);
@@ -175,7 +175,7 @@ CssSelector.prototype = {
     },
 
     pseudoElement: function (value) {
-        if (this.pseudoElements.length != 0) {
+        if (this.pseudoElements.length !== 0) {
             throw new Error("Element, id and pseudo-element should not occur more then one time inside the selector");
         }
         this.lastPart = this.checkOrder(this.PartEnum.PSEUDOELEMENT);
@@ -219,37 +219,30 @@ CssSelectorCombination.prototype = {
 
     element: function(value) {
         return new CssSelector().element(value);
-        //throw new Error('Not implemented');
     },
 
     id: function(value) {
         return new CssSelector().id(value);
-        //throw new Error('Not implemented');
     },
 
     class: function(value) {
         return new CssSelector().class(value);
-        //throw new Error('Not implemented');
     },
 
     attr: function(value) {
         return new CssSelector().attr(value);
-        //throw new Error('Not implemented');
     },
 
     pseudoClass: function(value) {
         return new CssSelector().pseudoClass(value);
-        //throw new Error('Not implemented');
     },
 
     pseudoElement: function(value) {
         return new CssSelector().pseudoElement(value);
-        //throw new Error('Not implemented');
     },
 
     combine: function(selector1, combinator, selector2) {
         return new CssSelectorCombination().combine(selector1, combinator, selector2);
-        //throw new Error('Not implemented');
     },
 };
 

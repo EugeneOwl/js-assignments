@@ -31,7 +31,7 @@ function findStringInSnakingPuzzle(puzzle, searchStr) {
     puzzle = puzzle.map(item => item.split(''));
 
     function dfs(currCoordinates, step) {
-        let save = puzzle[currCoordinates.x][currCoordinates.y];
+        let stash = puzzle[currCoordinates.x][currCoordinates.y];
         puzzle[currCoordinates.x][currCoordinates.y] = "";
 
         if (step === (searchStr.length-1))
@@ -54,7 +54,7 @@ function findStringInSnakingPuzzle(puzzle, searchStr) {
             catch (e){}
         }
 
-        puzzle[currCoordinates.x][currCoordinates.y] = save;
+        puzzle[currCoordinates.x][currCoordinates.y] = stash;
         return result;
     }
 
@@ -84,13 +84,13 @@ function findStringInSnakingPuzzle(puzzle, searchStr) {
  */
 function* getPermutations(chars) {
     function* HeapsAlgorithm(n, A) {
-        if (n == 1) {
+        if (n === 1) {
             yield A.join('');
         } else {
             let temp;
             for (let i = 0; i < n; i++) {
                 yield* HeapsAlgorithm(n - 1, A);
-                if (n % 2 == 0) {
+                if (n % 2 === 0) {
                     temp = A[i];
                     A[i] = A[n - 1];
                     A[n - 1] = temp;
@@ -146,9 +146,6 @@ function getMostProfitFromStockQuotes(quotes) {
  * 
  */
 function UrlShortener() {
-    this.urlAllowedChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"+
-        "abcdefghijklmnopqrstuvwxyz"+
-        "0123456789-_.~!*'();:@&=+$,/?#[]";
 }
 
 UrlShortener.prototype = {

@@ -20,20 +20,20 @@ function createCompassPoints() {
     let resArr = [];
     let direction = "";
     let degrees = 0;
-    var sides = ['N', 'E', 'S', 'W'];  // use array of cardinal directions only!
+    let sides = ['N', 'E', 'S', 'W'];
     for (let i = 0; i < sides.length; i++) {
-        let btwcardinal = (i == 0 || i == 2) ? (sides[i] + sides[i + 1])
-            : (sides[i == 3 ? 0 : i + 1] + sides[i]);
+        let btwcardinal = (i === 0 || i === 2) ? (sides[i] + sides[i + 1])
+            : (sides[i === 3 ? 0 : i + 1] + sides[i]);
         for (let count = 0; count < 8; count++) {
             switch (count) {
                 case 0: direction = sides[i]; break;
-                case 1: direction = sides[i] + 'b' + sides[i == 3 ? 0 : i + 1]; break;
+                case 1: direction = sides[i] + 'b' + sides[i === 3 ? 0 : i + 1]; break;
                 case 2: direction = sides[i] + btwcardinal; break;
                 case 3: direction = btwcardinal + "b" + sides[i]; break;
                 case 4: direction = btwcardinal; break;
-                case 5: direction = btwcardinal + "b" + sides[i == 3 ? 0 : i + 1]; break;
-                case 6: direction = sides[i == 3 ? 0 : i + 1] + btwcardinal; break;
-                case 7: direction = sides[i == 3 ? 0 : i + 1] + "b" + sides[i]; break;
+                case 5: direction = btwcardinal + "b" + sides[i === 3 ? 0 : i + 1]; break;
+                case 6: direction = sides[i === 3 ? 0 : i + 1] + btwcardinal; break;
+                case 7: direction = sides[i === 3 ? 0 : i + 1] + "b" + sides[i]; break;
             }
             resArr.push({ abbreviation: direction, azimuth: degrees });
             degrees += 11.25;
@@ -77,18 +77,16 @@ function createCompassPoints() {
  *   'nothing to do' => 'nothing to do'
  */
 function* expandBraces(str) {
-    const OPEN_BR = '{';
-    const CLOSE_BR = '}';
-    const SEPARATOR = ',';
-
+    const start_brak = '{';
+    const finish_brak = '}';
+    const delimiter = ',';
     yield* parse(str);
-
     function parse(str) {
         let items = [''];
         let pos = 0;
         while (str[pos]) {
-            if (str[pos] !== OPEN_BR) {
-                items = combine(items, [readUntil([OPEN_BR])]);
+            if (str[pos] !== start_brak) {
+                items = combine(items, [readUntil([start_brak])]);
             } else {
                 pos += 1;
                 items = combine(items, parseExpr());
@@ -99,8 +97,8 @@ function* expandBraces(str) {
         function parseExpr() {
             let items = [];
             let sepCount = 0;
-            while (str[pos] !== CLOSE_BR) {
-                if (str[pos] === SEPARATOR) {
+            while (str[pos] !== finish_brak) {
+                if (str[pos] === delimiter) {
                     pos += 1;
                     sepCount += 1;
                 } else {
@@ -114,9 +112,9 @@ function* expandBraces(str) {
 
         function parseExprPart() {
             let items = [''];
-            while (str[pos] !== SEPARATOR && str[pos] !== CLOSE_BR) {
-                if (str[pos] !== OPEN_BR) {
-                    items = combine(items, [readUntil([SEPARATOR, OPEN_BR, CLOSE_BR])]);
+            while (str[pos] !== delimiter && str[pos] !== finish_brak) {
+                if (str[pos] !== start_brak) {
+                    items = combine(items, [readUntil([delimiter, start_brak, finish_brak])]);
                 } else {
                     pos += 1;
                     items = combine(items, parseExpr());
@@ -270,20 +268,21 @@ function canDominoesMakeRow(dominoes) {
  * [ 1, 2, 4, 5]          => '1,2,4,5'
  */
 function extractRanges(nums) {
-    let res = "";
+    let result = "";
     for (let j = 0; j < nums.length; j++) {
         let i = 0;
-        if ((nums[j + 1] - nums[j] === 1) && (nums[j + 2] - nums[j] === 2)) {
+        if ((nums[j + 1] - nums[j] === 1) &&
+            (nums[j + 2] - nums[j] === 2)) {
             while (nums[j + 1] - nums[j] === 1) {
                 i++;
                 j++;
             }
-            res += `${nums[j - i]}-${nums[j]},`;
+            result += `${nums[j - i]}-${nums[j]},`;
 
         } else
-            res += nums[j] + ",";
+            result += nums[j] + ",";
     }
-    return res.slice(0, res.length - 1);
+    return result.slice(0, result.length - 1);
 }
 
 module.exports = {

@@ -49,7 +49,7 @@ function* get99BottlesOfBeer() {
         yield `${beer} bottles of beer on the wall, ${beer} bottles of beer.`;
         yield `Take one down and pass it around, ${--beer} bottles of beer on the wall.`;
     }
-    if (beer == 2) {
+    if (beer === 2) {
         yield '2 bottles of beer on the wall, 2 bottles of beer.';
         yield 'Take one down and pass it around, 1 bottle of beer on the wall.';
         yield '1 bottle of beer on the wall, 1 bottle of beer.';
@@ -70,15 +70,15 @@ function* get99BottlesOfBeer() {
  *
  */
 function* getFibonacciSequence() {
-    let f1 = 0;
-    let f2 = 0;
-    yield f2++;
+    let first = 0;
+    let second = 0;
+    yield second++;
 
     while(true){
-        yield f2;
-        let sum = f1 + f2;
-        f1 = f2;
-        f2 = sum;
+        yield second;
+        let sum = first + second;
+        first = second;
+        second = sum;
     }
 }
 
@@ -114,12 +114,12 @@ function* getFibonacciSequence() {
  *
  */
 function* depthTraversalTree(root) {
-    let node = [root];
-    while(node.length) {
-        let current = node.pop();
+    let twig = [root];
+    while(twig.length) {
+        let current = twig.pop();
         yield current;
         if(current.children){
-            node = node.concat(current.children.reverse());
+            twig = twig.concat(current.children.reverse());
         }
     }
 }
@@ -147,12 +147,12 @@ function* depthTraversalTree(root) {
  *
  */
 function* breadthTraversalTree(root) {
-    let nodes = [root];
-    for (let i = 0; i < nodes.length; i++) {
-        yield nodes[i];
-        if ('children' in nodes[i]) {
-            for (let j = 0; j < nodes[i].children.length; j++) {
-                nodes.push(nodes[i].children[j]);
+    let twigs = [root];
+    for (let i = 0; i < twigs.length; i++) {
+        yield twigs[i];
+        if ('children' in twigs[i]) {
+            for (let j = 0; j < twigs[i].children.length; j++) {
+                twigs.push(twigs[i].children[j]);
             }
         }
     }
@@ -176,8 +176,8 @@ function* mergeSortedSequences(source1, source2) {
     let s1 = source1(), s2 = source2();
     let first = s1.next().value, second = s2.next().value;
 
-    while (first != undefined || second != undefined) {
-        if (first != undefined && second != undefined) {
+    while (first !== undefined || second !== undefined) {
+        if (first !== undefined && second !== undefined) {
             if (first < second) {
                 yield first;
                 first = s1.next().value;
@@ -185,10 +185,10 @@ function* mergeSortedSequences(source1, source2) {
                 yield second;
                 second = s2.next().value;
             }
-        } else if (first != undefined) {
+        } else if (first !== undefined) {
             yield first;
             first = s1.next().value;
-        } else if (second != undefined) {
+        } else if (second !== undefined) {
             yield second;
             second = s2.next().value;
         }

@@ -38,9 +38,9 @@ function findElement(arr, value) {
  *    5 => [ 1, 3, 5, 7, 9 ]
  */
 function generateOdds(len) {
-    let resarr = new Array(len);
-    resarr.fill(1, 0, len);
-    return resarr.map((item, i) => {
+    let result = new Array(len);
+    result.fill(1, 0, len);
+    return result.map((item, i) => {
         return item + 2 * i
     });
 }
@@ -268,7 +268,7 @@ function getMovingSum(arr) {
  */
 function getSecondItems(arr) {
     return arr.filter((item, i) => {
-        return (i + 1) % 2 == 0;
+        return (i + 1) % 2 === 0;
     })
 }
 
@@ -288,11 +288,11 @@ function getSecondItems(arr) {
  *  [ 1,2,3,4,5 ] => [ 1, 2,2, 3,3,3, 4,4,4,4, 5,5,5,5,5 ]
  */
 function propagateItemsByPositionIndex(arr) {
-    let tempArr = arr.map((item, i) => {
+    let temp = arr.map((item, i) => {
         let mas = new Array(i + 1);
         return mas.fill(item);
     });
-    return tempArr.length != 0 ? tempArr.reduce((cur, next) => cur.concat(next)) : tempArr;
+    return temp.length !== 0 ? temp.reduce((cur, next) => cur.concat(next)) : temp;
 }
 
 
@@ -312,7 +312,7 @@ function propagateItemsByPositionIndex(arr) {
 function get3TopItems(arr) {
     arr.sort((a, b) => b - a);
     if (arr.length > 3)
-        arr.length = 3
+        arr.length = 3;
     return arr;
 }
  
@@ -464,7 +464,7 @@ function toStringList(arr) {
  */
 function sortCitiesArray(arr) {
     return arr.sort((a, b) => {
-        return a.country != b.country ? (a.country > b.country ? 1 : -1) : (a.city > b.city ? 1 : -1);
+        return a.country !== b.country ? (a.country > b.country ? 1 : -1) : (a.city > b.city ? 1 : -1);
     });
 }
 
@@ -632,9 +632,9 @@ function swapHeadAndTail(arr) {
     let arrLen = arr.length;
     let arrEnd = arr.splice(0, Math.floor(arrLen / 2));
     let arrStart = arr.splice(-Math.floor(arrLen / 2));
-    let resArr = Array();
+    let result = Array();
 
-    return resArr.concat(arrStart, arr, arrEnd);
+    return result.concat(arrStart, arr, arrEnd);
 }
 
 
